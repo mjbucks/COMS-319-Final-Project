@@ -1,0 +1,63 @@
+.App {
+    background-color: #c5e6f0;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.card-container {
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 50px;
+    background-color: #f7f7f7;
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px; 
+    font-family:'Gill Sans', monospace;
+  }
+  
+  .card-container h2 {
+    margin-bottom: 20px; 
+    font-family:'Gill Sans', monospace;
+  }
+  
+  .card-container form {
+    margin-bottom: 20px;
+  }
+  
+  .card-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-family:'Gill Sans', monospace;
+  }
+  
+  .card-container input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-family:'Gill Sans', monospace;
+  }
+  
+  .card-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #c5e6f0;
+    font-family:'Gill Sans', monospace;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .card-container button:hover {
+    background-color: #a5c6d0;
+  }
+
+  .titleText {
+    font-family:'Gill Sans', monospace;
+    text-align: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+  

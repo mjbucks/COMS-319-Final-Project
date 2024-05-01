@@ -1,9 +1,14 @@
 import LoginForm from "./components/LoginForm";
+import TitleText from "./components/TitleText";
+import './styles/style.css';
 
 function App() {
   return (
     <div className="App">
-      <LoginForm/>
+      <TitleText/>
+      <div className="card-container">
+        <LoginForm />
+      </div>
     </div>
   );
 }
