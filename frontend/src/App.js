@@ -6,31 +6,50 @@ import './styles/style.css';
 function App() {
   const [p1username, setP1Username] = useState('');
   const [p2username, setP2Username] = useState('');
+  const [screen, setScreen] = useState('login');
 
-  const bothPlayersLoggedIn = p1username && p2username;
+  // Render the current screen based on the value of the screen state
+  const renderScreen = () => {
+    switch (screen) {
+      case 'login':
+        return (
+          <>
+            <div className="card-container">
+              <LoginForm
+                setPlayerUsername={setP1Username}
+                player="P1"
+              />
+            </div>
+            <div className="card-container">
+              <LoginForm
+                setPlayerUsername={setP2Username}
+                player="P2"
+              />
+            </div>
+          </>
+        );
+      case 'home':
+        return <></>;
+      case 'other1':
+        return <></>;
+      case 'other2':
+        return <></>;
+      // Add more cases for additional screens
+      default:
+        return null;
+    }
+  };
 
-  const renderLoginScreens = !bothPlayersLoggedIn && (
-    <>
-      <div className="card-container">
-        <LoginForm
-          setPlayerUsername={setP1Username}
-          player="P1"
-        />
-      </div>
-      <div className="card-container">
-        <LoginForm
-          setPlayerUsername={setP2Username}
-          player="P2"
-        />
-      </div>
-    </>
-  );
+  // Check if both players have logged in to change screen to home
+  if (p1username && p2username && screen === 'login') {
+    setScreen('home');
+  }
 
   return (
     <div className="App">
       <TitleText />
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-        {renderLoginScreens}
+        {renderScreen()}
       </div>
     </div>
   );

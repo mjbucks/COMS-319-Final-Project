@@ -113,7 +113,7 @@ export function LoginForm({
 };
 
 LoginForm.propTypes = {
-  playerUsername: PropTypes.func,
+  setPlayerUsername: PropTypes.func,
   player: PropTypes.string
 };
 
