@@ -64,10 +64,10 @@ app.post("/addPlayer", async (req, res) => {
     const values = Object.values(req.body);
     const newDocument = {
       "id": req.body.id, 
-      "username": req.body.title,
-      "password": req.body.price, 
-      "win": req.body.description, 
-      "loss": req.body.category, 
+      "username": req.body.username,
+      "password": req.body.password, 
+      "win": req.body.win, 
+      "loss": req.body.loss, 
     };
     console.log(newDocument);
 
@@ -156,3 +156,34 @@ app.get("characters/:id", async (req, res) => {
   if (!results) res.send("Not Found").status(404);
   else res.send(results).status(200);
  });
+
+ app.post("/player/login", async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  console.log("Attempting login for username:", username);
+
+  try {
+    await client.connect();
+    console.log("Connected successfully to MongoDB");
+
+    const query = { username: username };
+    const user = await db.collection("players").findOne(query);
+
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
+    }
+
+    if (user.password !== password) {
+      res.status(401).send("Incorrect password");
+      return;
+    }
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal server error");
+  } finally {
+    await client.close();
+  }
+});
