@@ -1,11 +1,16 @@
 import { ViewCharacters } from "./components/CharacterSelect";
 import LoginForm from "./components/LoginForm";
+import TitleText from "./components/TitleText";
+import './styles/style.css';
 
 function App() {
   return (
     <div className="App">
-      <LoginForm/>
-      <ViewCharacters/>
+      <TitleText/>
+      <div className="card-container">
+        <LoginForm />
+        <ViewCharacters/>
+    </div>
     </div>
   );
 }
