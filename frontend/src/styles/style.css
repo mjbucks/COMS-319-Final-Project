@@ -51,13 +51,15 @@
   }
   
   .card-container button:hover {
-    background-color: #a5c6d0;
+    background-color: #081f5c;
+    color: white;
   }
 
-  .titleText {
+  .header-main {
+    background-color: #081f5c;
+    color: #fff;
+    padding: 10px 0;
+    padding-top: 2%;
     font-family:'Gill Sans', monospace;
-    text-align: center;
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
+}
   
