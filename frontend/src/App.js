@@ -9,10 +9,9 @@ function App() {
       <TitleText/>
       <div className="card-container">
         <LoginForm />
-        <ViewCharacters/>
     </div>
+    <ViewCharacters/>
     </div>
   );
 }
-
 export default App;
