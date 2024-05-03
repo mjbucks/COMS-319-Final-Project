@@ -19,6 +19,7 @@ export function ViewGame({p1Character, p2Character, setScreen, p1username, p2use
     //get 2 for each player
     const p1stats = {...statBoostTracker};
     const p2stats = {...statBoostTracker};
+    const gameStats = {...statBoostTracker};
 
     const handleGameCalcs = () => {
         //do stat increases here
@@ -30,17 +31,33 @@ export function ViewGame({p1Character, p2Character, setScreen, p1username, p2use
     const handleMoveEffects = () => {
         if(!p1move.effect.equals("none")){
             //add effects
-            p1stats.attack += p1move.effect.atk * 0.5
-            p1stats.defense += p1move.effect.def * 0.5
-            p1stats.special_attack += p1move.effect.spatk * 0.5
-            p1stats.special_defense += p1move.effect.spdef * 0.5
-            p1stats.speed += p1move.effect.spe * 0.5
+            p1stats.attack += p1move.effect?.atk * 0.5;
+            p1stats.defense += p1move.effect?.def * 0.5;
+            p1stats.special_attack += p1move.effect?.spatk * 0.5;
+            p1stats.special_defense += p1move.effect?.spdef * 0.5;
+            p1stats.speed += p1move.effect?.spe * 0.5;
+            p1stats.priority = p1move.effect?.priority * 0.5;
 
-            p2stats.attack += p2move.effect.atk * 0.5
-            p2stats.defense += p2move.effect.def * 0.5
-            p2stats.special_attack += p2move.effect.spatk * 0.5
-            p2stats.special_defense += p2move.effect.spdef * 0.5
-            p2stats.speed += p2move.effect.spe * 0.5
+            p2stats.attack += p2move.effect?.atk * 0.5;
+            p2stats.defense += p2move.effect?.def * 0.5;
+            p2stats.special_attack += p2move.effect?.spatk * 0.5;
+            p2stats.special_defense += p2move.effect?.spdef * 0.5;
+            p2stats.speed += p2move.effect?.spe * 0.5;
+            p1stats.priority = p1move.effect?.priority * 0.5;
+
+            if(gameStats.snow != true){
+                gameStats.snow = p1move.effect?.snow
+            }
+            if(gameStats.snow != true){
+                gameStats.snow = p2move.effect?.snow
+            }
+            if(gameStats.inverse != true){
+                gameStats.inverse = p2move.effect?.inverse
+            }
+            if(gameStats.inverse != true){
+                gameStats.inverse = p2move.effect?.inverse
+            }
+
         }
     }
     return (
