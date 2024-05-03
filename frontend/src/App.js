@@ -2,6 +2,7 @@ import LoginForm from "./components/LoginForm";
 import TitleText from "./components/TitleText";
 import React, { useState } from 'react';
 import './styles/style.css';
+import Homepage from "./components/Homepage";
 
 function App() {
   const [p1username, setP1Username] = useState('');
@@ -29,7 +30,11 @@ function App() {
           </>
         );
       case 'home':
-        return <></>;
+        return <Homepage
+          p1User={p1username}
+          p2User={p2username}
+          setScreen={setScreen}
+        />;
       case 'other1':
         return <></>;
       case 'other2':

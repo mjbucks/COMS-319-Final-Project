@@ -32,7 +32,8 @@
   }
   
   .card-container input {
-    width: 90%;
+    width: 100%;
+    margin: 1%;
     padding: 10px;
     margin-bottom: 15px;
     font-family:'Gill Sans', monospace;
