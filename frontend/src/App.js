@@ -4,6 +4,8 @@ import LoginForm from "./components/LoginForm";
 import TitleText from "./components/TitleText";
 import React, { useState } from 'react';
 import './styles/style.css';
+import Homepage from "./components/Homepage";
+import WikiCard from "./components/WikiCard";
 
 function App() {
   const [p1username, setP1Username] = useState('');
@@ -36,27 +38,35 @@ function App() {
           </>
         );
       case 'home':
-        return <></>;
-      case 'chooseCharacter':
-        return <div><ViewCharacters
-        setP1Character = {setP1Character}
-        setP2Character = {setP2Character}
-        setScreen = {setScreen}
-        p1username = {p1username}
-        p2username = {p2username}
-
-        /></div>;
-      case 'game':
-        return <div><ViewGame
-        p1Character = {p1Character}
-        p2Character = {p2Character}
-        setScreen = {setScreen}
-        p1username = {p1username}
-        p2username = {p2username}
-        p1move = {p1move}
-        p2move = {p2move}
-
-        /></div>;
+        return <Homepage
+          p1User={p1username}
+          p2User={p2username}
+          setScreen={setScreen}
+        />;
+      case 'wiki':
+        return <WikiCard
+          character={null}
+        />;
+        case 'chooseCharacter':
+          return <div><ViewCharacters
+          setP1Character = {setP1Character}
+          setP2Character = {setP2Character}
+          setScreen = {setScreen}
+          p1username = {p1username}
+          p2username = {p2username}
+  
+          /></div>;
+        case 'game':
+          return <div><ViewGame
+          p1Character = {p1Character}
+          p2Character = {p2Character}
+          setScreen = {setScreen}
+          p1username = {p1username}
+          p2username = {p2username}
+          p1move = {p1move}
+          p2move = {p2move}
+  
+          /></div>;
       // Add more cases for additional screens
       default:
         return null;

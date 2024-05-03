@@ -57,9 +57,16 @@ app.get("/player/:id", async (req, res) => {
   else res.send(results).status(200);
  });
     
-app.post("/addPlayer", async (req, res) => {
-  try{
+ app.post("/addPlayer", async (req, res) => {
+  try {
     await client.connect();
+    
+    const existingPlayer = await db.collection("players").findOne({ username: req.body.username });
+    if (existingPlayer) {
+      res.status(409).send({ error: 'Username already exists' });
+      return;
+    }
+
     const keys = Object.keys(req.body);
     const values = Object.values(req.body);
     const newDocument = {
@@ -72,17 +79,16 @@ app.post("/addPlayer", async (req, res) => {
     console.log(newDocument);
 
     const results = await db
-    .collection("players")
-    .insertOne(newDocument);
-    res.status(200);
-    res.send(results);
-  }
-  catch (error) {
+      .collection("players")
+      .insertOne(newDocument);
+    
+    res.status(200).send(results);
+  } catch (error) {
     console.error("An error occurred:", error);
     res.status(500).send({ error: 'An internal server error occurred' });
   }
+});
 
- });
 
 app.delete("/deletePlayer/:id", async (req, res) => {
   try {

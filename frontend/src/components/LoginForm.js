@@ -10,6 +10,7 @@ export function LoginForm({
   const [isSignup, setIsSignup] = useState(false);
   const [error, setError] = useState('');
   const [errorColor, setErrorColor] = useState('red');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -37,14 +38,17 @@ export function LoginForm({
         });
 
         if (!response.ok) {
-          throw new Error('Failed to submit form data');
+          const responseData = await response.json();
+          if (response.status === 409) {
+            throw new Error(responseData.error); // Throw error message from server
+          } else {
+            throw new Error('Failed to submit form data');
+          }
         }
-
-        setError("Login Successfully")
-        setErrorColor("green");
+        
         setPlayerUsername(username);
+        setLoggedIn(true);
 
-        console.log('Form data submitted successfully');
       } catch (error) {
         console.error('Error submitting form data:', error.message);
         setErrorColor("red");
@@ -70,44 +74,50 @@ export function LoginForm({
         });
 
         if (!response.ok) {
-          throw new Error('Failed to submit form data');
+          const responseData = await response.json();
+          if (response.status === 409) {
+            throw new Error(responseData.error); // Throw error message from server
+          } else {
+            throw new Error('Failed to submit form data');
+          }
         }
 
-        setError('Account Created Successfully');
-        setErrorColor("green");
         setPlayerUsername(username);
+        setLoggedIn(true);
 
-        console.log('Form data submitted successfully');
       } catch (error) {
         console.error('Error submitting form data:', error.message);
         setErrorColor("red");
-        setError('Failed to login to account');
+        setError(error.message);
       }
     }
-    // Reset username and password fields after submission
-    setUsername('');
-    setPassword('');
   };
 
   return (
     <div>
-      <h2>{isSignup ? `Create Account ${player}` : `Log In ${player}`}</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input type="text" value={username} onChange={handleUsernameChange} />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
-        </div>
-        <button type="submit">{isSignup ? 'Create Account' : 'Log In'}</button>
-      </form>
-      {error && <p style={{ color: errorColor }}>{error}</p>} {/* Render error message if error is not empty */}
-      <p>
-        {isSignup ? 'Already have an account?' : 'Don\'t have an account?'}
-        <button onClick={() => setIsSignup(!isSignup)}>{isSignup ? 'Log In' : 'Sign Up'}</button>
-      </p>
+      {loggedIn ? (
+        <h2>{`Welcome, ${username}!`}</h2>
+      ) : (
+        <>
+          <h2>{isSignup ? `Create Account ${player}` : `Log In ${player}`}</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Username:</label>
+              <input type="text" value={username} onChange={handleUsernameChange} />
+            </div>
+            <div>
+              <label>Password:</label>
+              <input type="password" value={password} onChange={handlePasswordChange} />
+            </div>
+            <button type="submit">{isSignup ? 'Create Account' : 'Log In'}</button>
+          </form>
+          {error && <p style={{ color: errorColor }}>{error}</p>}
+          <p>
+            {isSignup ? 'Already have an account?' : 'Don\'t have an account?'}
+            <button onClick={() => setIsSignup(!isSignup)}>{isSignup ? 'Log In' : 'Sign Up'}</button>
+          </p>
+        </>
+      )}
     </div>
   );
 };
