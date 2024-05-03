@@ -63,4 +63,30 @@
     padding-top: 2%;
     font-family:'Gill Sans', monospace;
 }
-  
+
+.character-display{
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-family:'Gill Sans', monospace;
+  color: #000;
+  border: 1px solid black;
+  border-radius: 10px; 
+  cursor: pointer;
+}
+.character-display-clicked{
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-family:'Gill Sans', monospace;
+  color: white;
+  background-color: #081f5c;
+  border: 1px solid black;
+  border-radius: 10px; 
+  cursor: pointer;
+}
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

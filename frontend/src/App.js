@@ -1,3 +1,5 @@
+import { ViewCharacters } from "./components/CharacterSelect";
+import { ViewGame } from "./components/Game";
 import LoginForm from "./components/LoginForm";
 import TitleText from "./components/TitleText";
 import React, { useState } from 'react';
@@ -8,54 +10,12 @@ import WikiCard from "./components/WikiCard";
 function App() {
   const [p1username, setP1Username] = useState('');
   const [p2username, setP2Username] = useState('');
-  const [screen, setScreen] = useState('wiki');
-
-  const Gavin = {
-    "_id": {
-      "$oid": "66326e7c01c97675bb6c50fd"
-    },
-    "name": "Gavin",
-    "ability": "Shiver",
-    "abildesc": "Powers up the users attack while snow terrain is active.",
-    "stats": {
-      "speed": 50,
-      "luck": 50,
-      "attack": 700,
-      "special_attack": 50,
-      "defense": 50,
-      "special_defense": 50,
-      "hp": 50
-    },
-    "moves": {
-      "move1": {
-        "name": "Snow Day",
-        "physical": 0,
-        "special": 0,
-        "description": "Turns the terrain to snow.",
-        "effect": {
-          "snow": "true"
-        }
-      },
-      "move2": {
-        "name": "Smash",
-        "description": "The user bashes the target.",
-        "physical": 100,
-        "special": 0,
-        "effect": "none"
-      },
-      "move3": {
-        "name": "Bike",
-        "description": "The user doubles their current speed stat.",
-        "physical": 0,
-        "special": 0,
-        "effect": {
-          "spe": 2
-        }
-      }
-    },
-    "description": "Gavin is a true force of nature. With his overwhelming power he can easily destroy trees and other obstacles in his path. Gavin gets stronger in the snow, hearing the roaring drums of each snowflake.",
-    "picture": "../Images/gavin.jpg"
-  };
+  const [p1move, setP1Move] = useState({});
+  const [p2move, setP2Move] = useState({});
+  const [p1Character, setP1Character] = useState({});
+  const [p2Character, setP2Character] = useState({});
+  
+  const [screen, setScreen] = useState('chooseCharacter');
 
   // Render the current screen based on the value of the screen state
   const renderScreen = () => {
@@ -85,10 +45,28 @@ function App() {
         />;
       case 'wiki':
         return <WikiCard
-          character={Gavin}
+          character={null}
         />;
-      case 'other2':
-        return <></>;
+        case 'chooseCharacter':
+          return <div><ViewCharacters
+          setP1Character = {setP1Character}
+          setP2Character = {setP2Character}
+          setScreen = {setScreen}
+          p1username = {p1username}
+          p2username = {p2username}
+  
+          /></div>;
+        case 'game':
+          return <div><ViewGame
+          p1Character = {p1Character}
+          p2Character = {p2Character}
+          setScreen = {setScreen}
+          p1username = {p1username}
+          p2username = {p2username}
+          p1move = {p1move}
+          p2move = {p2move}
+  
+          /></div>;
       // Add more cases for additional screens
       default:
         return null;
@@ -109,5 +87,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
