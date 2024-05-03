@@ -111,7 +111,8 @@ app.delete("/deletePlayer/:id", async (req, res) => {
     console.log(req.body);
     const updateData = {
     $set:{
-    "price": req.body.price,
+    "win": req.body.win,
+    "loss":req.body.loss
     }
     };
     // Add options if needed, for example { upsert: true } to create a document if it doesn't exist

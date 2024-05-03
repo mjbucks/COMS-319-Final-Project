@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
+import "../styles/style.css"
 
-export function ViewCharacters({setCharacterP1, setCharacterP2}) {
+import PropTypes from "prop-types";
+
+export function ViewCharacters({setP1Character, setP2Character, setScreen, p1username, p2username}) {
     const [chars, setCharacters] = useState([]);
     const [char, setChar] = useState({});
     const [charId, setCharId] = useState("");
@@ -52,38 +55,54 @@ export function ViewCharacters({setCharacterP1, setCharacterP2}) {
         <div className="container">
             <div className="row">
                 <div className="col">
-                    <h3>Player 1: {equip.name}</h3>
+                    <h3>{p1username}</h3>
                     {chars.map((char, index) => (
                         <div key={index}>
-                            <h5>{char.name}</h5>
                             <button 
-                                style={{backgroundColor: char === selectedEquip ? 'blue' : 'white'}} 
+                                className={char === selectedEquip ? "character-display-clicked" : "character-display"}
                                 onClick={() => {
                                     setEquip(char);
                                     setSelectedEquip(char);
-                                    setCharacterP1 = equip1;
+                                    setP1Character(char);
                                 }}
-                            > Choose </button>
+                            >  {char.name} </button>
                         </div>
                     ))}
                 </div>
                 <div className="col">
-                <h3>Player 2: {equip2.name}</h3>
+                <h3>Characters</h3>
+
+                </div>
+                <div className="col">
+                <h3>{p2username}</h3>
                     {chars.map((char, index) => (
-                        <div key={index}>
-                            <h5>{char.name}</h5>
-                            <button 
-                                style={{backgroundColor: char === selectedEquip2 ? 'blue' : 'white'}} 
-                                onClick={() => {
-                                    setEquip2(char);
-                                    setSelectedEquip2(char);
-                                    setCharacterP2 = equip2;setCharacterP1 = equip;
-                                }}
-                            > Choose </button>
-                        </div>
+                        <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                        <button 
+                            className={char === selectedEquip2 ? "character-display-clicked" : "character-display"}
+                            onClick={() => {
+                                setEquip2(char);
+                                setSelectedEquip2(char);
+                                setP2Character(char);
+                            }}
+                            style={{ height: '50px' }}
+                        >  {char.name} </button> 
+                        <img src={char.picture} alt={char.name} style={{ height: '50px' }}></img>
+                    </div>
                     ))}
                 </div>
             </div>
+            <button disabled={!equip || !equip2} onClick={() => {
+                setScreen("game")
+            }}> Begin Game </button>
         </div>
     );
 }
+ViewCharacters.propTypes = {
+    setP1Character: PropTypes.func,
+    setP1Character: PropTypes.func,
+    setScreen: PropTypes.func,
+    p1username: PropTypes.string,
+    p2username: PropTypes.string,
+  };
+  
+  export default ViewCharacters;
