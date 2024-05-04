@@ -22,13 +22,13 @@ export function ViewGame({p1Character, p2Character, setScreen, p1username, p2use
     const p2stats = {...statBoostTracker};
     const gameStats = {...statBoostTracker};
 
-    p1stats.hp = character1.stats.hp
-    p2stats.hp = character2.stats.hp
+    p1stats.hp = p1Character.stats.hp
+    p2stats.hp = p2Character.stats.hp
 
     const handleGameCalcs = () => {
         //do stat increases here
-        let p1crit = ((Math.floor(Math.random() * 1000) <= p1Character.stats.luck) && p2Character.ability != "Point guard") ? 2.5 : 1;
-        let p2crit = ((Math.floor(Math.random() * 1000) <= p2Character.stats.luck) && p1Character.ability != "Point guard") ? 2.5 : 1;
+        let p1crit = ((Math.floor(Math.random() * 1000) <= p1Character.stats.luck) && p2Character.ability !== "Point guard") ? 2.5 : 1;
+        let p2crit = ((Math.floor(Math.random() * 1000) <= p2Character.stats.luck) && p1Character.ability !== "Point guard") ? 2.5 : 1;
         var p1atk = (((52 * p1move.physical * ((p1Character.stats.attack * p1stats.attack)/ (p2Character.stats.defense * p2stats.defense)))/50) + 2);
         p1atk = p1atk + (((52 * p1move.special * ((p1Character.stats.special_attack * p1stats.special_attack)/ (p2Character.stats.special_defense * p2stats.special_defense)))/50) + 2)* p1crit;//Crit rate at the end
         var p2atk = (((52 * p2move.physical * ((p2Character.stats.attack * p2stats.attack) / (p1Character.stats.defense * p1stats.defense)))/50) + 2);
@@ -78,16 +78,16 @@ export function ViewGame({p1Character, p2Character, setScreen, p1username, p2use
             p2stats.speed += p2stats.speed * (p2move.effect?.spe * 0.5);
             p1stats.priority = p2move.effect?.priority;
 
-            if(gameStats.snow != true){
+            if(gameStats.snow !== true){
                 gameStats.snow = p1move.effect?.snow
             }
-            if(gameStats.snow != true){
+            if(gameStats.snow !== true){
                 gameStats.snow = p2move.effect?.snow
             }
-            if(gameStats.inverse != true){
+            if(gameStats.inverse !== true){
                 gameStats.inverse = p2move.effect?.inverse
             }
-            if(gameStats.inverse != true){
+            if(gameStats.inverse !== true){
                 gameStats.inverse = p2move.effect?.inverse
             }
 

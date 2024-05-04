@@ -1,108 +1,118 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "../styles/style.css"
-
+import "../styles/style.css";
 import PropTypes from "prop-types";
 
-export function ViewCharacters({setP1Character, setP2Character, setScreen, p1username, p2username}) {
-    const [chars, setCharacters] = useState([]);
-    const [char, setChar] = useState({});
-    const [charId, setCharId] = useState("");
-    //set characters
-    const [equip, setEquip] = useState("");
-    const [equip2, setEquip2] = useState("");
+export function ViewCharacters({
+  setP1Character,
+  setP2Character,
+  setScreen,
+  p1username,
+  p2username,
+}) {
+  const [chars, setCharacters] = useState([]);
+  const [selectedP1Character, setSelectedP1Character] = useState(null);
+  const [selectedP2Character, setSelectedP2Character] = useState(null);
 
-    const [selectedEquip, setSelectedEquip] = useState(null);
-    const [selectedEquip2, setSelectedEquip2] = useState(null);
+  useEffect(() => {
+    fetchCharacters();
+  }, []);
 
-    useEffect(() => {
-        fetchCharacters();
-    }, []);
-
-    useEffect(() => {
-        if (charId) { 
-            handleDisplayChar();
+  const fetchCharacters = () => {
+    fetch("http://localhost:8081/characters")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch characters");
         }
-    }, [charId]);
-
-    const handleDisplayChar = () => {
-        fetch(`http://localhost:8081/characters/${charId}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-        .then(response => response.json())
-        .then(data => setChar(data))
-        .catch(error => console.error("Error fetching character:", error));
-    };
-
-    const fetchCharacters = () => {
-        fetch("http://localhost:8081/characters")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch characters");
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Fetched chracter:", data);
-                setCharacters(data);
-            })
-            .catch(error => console.error("Error fetching characters:", error));
-    };
-
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col">
-                    <h3>{p1username}</h3>
-                    {chars.map((char, index) => (
-                        <div key={index}>
-                            <button 
-                                className={char === selectedEquip ? "character-display-clicked" : "character-display"}
-                                onClick={() => {
-                                    setEquip(char);
-                                    setSelectedEquip(char);
-                                    setP1Character(char);
-                                }}
-                            >  {char.name} </button>
-                        </div>
-                    ))}
-                </div>
-                <div className="col">
-                <h3>Characters</h3>
-
-                </div>
-                <div className="col">
-                <h3>{p2username}</h3>
-                    {chars.map((char, index) => (
-                        <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-                        <button 
-                            className={char === selectedEquip2 ? "character-display-clicked" : "character-display"}
-                            onClick={() => {
-                                setEquip2(char);
-                                setSelectedEquip2(char);
-                                setP2Character(char);
-                            }}
-                            style={{ height: '50px' }}
-                        >  {char.name} </button> 
-                        <img src={char.picture} alt={char.name} style={{ height: '50px' }}></img>
-                    </div>
-                    ))}
-                </div>
-            </div>
-            <button disabled={!equip || !equip2} onClick={() => {
-                setScreen("game")
-            }}> Begin Game </button>
-        </div>
-    );
-}
-ViewCharacters.propTypes = {
-    setP1Character: PropTypes.func,
-    setP1Character: PropTypes.func,
-    setScreen: PropTypes.func,
-    p1username: PropTypes.string,
-    p2username: PropTypes.string,
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched characters:", data);
+        setCharacters(data);
+      })
+      .catch((error) =>
+        console.error("Error fetching characters:", error.message)
+      );
   };
-  
-  export default ViewCharacters;
+
+  const handleSelectCharacter = (character, player) => {
+    if (player === 1) {
+      setSelectedP1Character(character);
+      setP1Character(character);
+    } else if (player === 2) {
+      setSelectedP2Character(character);
+      setP2Character(character);
+    }
+  };
+
+  const renderCharacterButtons = (player) => {
+    return chars.map((character) => (
+      <button
+        key={character.id}
+        className={
+          player === 1 && selectedP1Character === character
+            ? "selected-character"
+            : player === 2 && selectedP2Character === character
+            ? "selected-character"
+            : "character-button"
+        }
+        onClick={() => handleSelectCharacter(character, player)}
+      >
+        {character.name}
+      </button>
+    ));
+  };
+
+  return (
+    <div className="container-center">
+      <div className="row">
+        <div className="col text-center">
+          <h3>{p1username}</h3>
+          {selectedP1Character && (
+            <img
+              src={selectedP1Character.picture}
+              alt={selectedP1Character.name}
+              className="selected-character-image"
+            />
+          )}
+          <div className="character-row">{renderCharacterButtons(1)}</div>
+        </div>
+        <div className="col text-center">
+          <h3>Characters</h3>
+        </div>
+        <div className="col text-center">
+          <h3>{p2username}</h3>
+          {selectedP2Character && (
+            <img
+              src={selectedP2Character.picture}
+              alt={selectedP2Character.name}
+              className="selected-character-image"
+            />
+          )}
+          <div className="character-row">{renderCharacterButtons(2)}</div>
+        </div>
+      </div>
+      <div className="text-center mt-3">
+        <button
+          disabled={!selectedP1Character || !selectedP2Character}
+          className="begin-button"
+          onClick={() => {
+            setScreen("game");
+          }}
+        >
+          Begin Game
+        </button>
+      </div>
+    </div>
+  );
+}
+
+ViewCharacters.propTypes = {
+  setP1Character: PropTypes.func.isRequired,
+  setP2Character: PropTypes.func.isRequired,
+  setScreen: PropTypes.func.isRequired,
+  p1username: PropTypes.string.isRequired,
+  p2username: PropTypes.string.isRequired,
+};
+
+export default ViewCharacters;

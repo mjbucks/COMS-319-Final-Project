@@ -15,7 +15,7 @@ function App() {
   const [p1Character, setP1Character] = useState({});
   const [p2Character, setP2Character] = useState({});
   
-  const [screen, setScreen] = useState('chooseCharacter');
+  const [screen, setScreen] = useState('login');
 
   // Render the current screen based on the value of the screen state
   const renderScreen = () => {
