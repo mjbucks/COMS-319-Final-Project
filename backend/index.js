@@ -111,7 +111,8 @@ app.delete("/deletePlayer/:id", async (req, res) => {
   });
 
   app.put("/updatePlayers/:id", async (req, res) => {
-    const id = Number(req.params.id);
+    const id = (req.params.id);
+    console.log(id);
     const query = { id: id };
     await client.connect();
     console.log("Item to Update :",id);

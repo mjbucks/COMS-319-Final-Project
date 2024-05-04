@@ -25,8 +25,7 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
     const [p1stats, setP1Stats] = useState(statBoostTracker);
     const [p2stats, setP2Stats] = useState(statBoostTracker);
     const [gameStats, setGameStats] = useState(statBoostTracker)
-    const [winner, setWinner] = useState({});
-    const [loser, setLoser] = useState({});
+    const [winner, setWinner] = useState('');
     const [showWikiCard, setShowWikiCard] = useState(false);
     const [selectedCharacter, setSelectedCharacter] = useState(null);
     //get 2 for each player
@@ -192,30 +191,31 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
     function isGameOver() {
         if (p1stats.hp < 0) {
             //add to DB, pop up 
-            setWinner(p2username);
-            setLoser(p1username);
-            
+            p2username.win += 1;
+            p1username.loss += 1;
+            setWinner(p2username.username);
         }
         else if (p2stats.hp < 0) {
-            setWinner(p1username);
-            setLoser(p2username);
+            p1username.win += 1;
+            p2username.loss += 1;
+            setWinner(p1username.username);
         }
     }
 
     function handleBackToHome() {
-        handleAddWin(winner);
-        handleAddLoss(loser);
+        handleUpdate(p1username);
+        handleUpdate(p2username);
         setScreen("home");
     }
 
-    const handleAddWin = (user) => {
+    const handleUpdate = (user) => {
         fetch(`http://localhost:8081/updatePlayers/${user.id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                    "win" : (user.win + 1),
+                    "win" : (user.win),
                     "loss" : (user.loss)
                 })
         })
