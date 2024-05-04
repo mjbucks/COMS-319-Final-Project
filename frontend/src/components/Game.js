@@ -25,7 +25,8 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
     const [p1stats, setP1Stats] = useState(statBoostTracker);
     const [p2stats, setP2Stats] = useState(statBoostTracker);
     const [gameStats, setGameStats] = useState(statBoostTracker)
-    const [winner, setWinner] = useState('');
+    const [winner, setWinner] = useState({});
+    const [loser, setLoser] = useState({});
     const [showWikiCard, setShowWikiCard] = useState(false);
     const [selectedCharacter, setSelectedCharacter] = useState(null);
     //get 2 for each player
@@ -191,11 +192,67 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
     function isGameOver() {
         if (p1stats.hp < 0) {
             //add to DB, pop up 
-            setWinner(p2username.username);
+            setWinner(p2username);
+            setLoser(p1username);
+            
         }
         else if (p2stats.hp < 0) {
-            setWinner(p1username.username);
+            setWinner(p1username);
+            setLoser(p2username);
         }
+    }
+
+    function handleBackToHome() {
+        handleAddWin(winner);
+        handleAddLoss(loser);
+        setScreen("home");
+    }
+
+    const handleAddWin = (user) => {
+        fetch(`http://localhost:8081/updatePlayers/${user.id}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                    "win" : (user.win + 1),
+                    "loss" : (user.loss)
+                })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log(`${user.name} updated successfully.`);
+            } else {
+                console.log(`Failed to update ${user.name}.`);
+            }
+        })
+        .catch(error => {
+            console.error("Error updating:", error);
+            console.log(`Error updating ${user.name}.`)
+        });
+    }
+    const handleAddLoss = (user) => {
+        fetch(`http://localhost:8081/updatePlayers/${user.id}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                    "win" : (user.win),
+                    "loss" : (user.loss + 1)
+                })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log(`${user.name} updated successfully.`);
+            } else {
+                console.log(`Failed to update ${user.name}.`);
+            }
+        })
+        .catch(error => {
+            console.error("Error updating:", error);
+            console.log(`Error updating ${user.name}.`)
+        });
     }
     function handleSetP1Move(move) {
         setP1Move(move);
@@ -213,10 +270,6 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
         setP2Move({})
         isGameOver();
     };
-
-    function handleBackToHome() {
-        setScreen("home");
-    }
 
     const openWikiCard = (character) => {
         setSelectedCharacter(character);
