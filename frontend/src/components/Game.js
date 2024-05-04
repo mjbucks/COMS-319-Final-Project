@@ -32,6 +32,7 @@ export function ViewGame({p1Character, p2Character, setScreen, p1username, p2use
         setP2Stats(stats => ({...stats, hp: p2Character.stats.hp * 2.5}));
     }, [p1Character, p2Character]);
 
+
     function handleGameCalcs() {
         //do stat increases here
         
