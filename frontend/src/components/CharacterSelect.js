@@ -67,7 +67,7 @@ export function ViewCharacters({
     <div className="container-center">
       <div className="row">
         <div className="col text-center">
-          <h3>{p1username}</h3>
+          <h3>{p1username.username}</h3>
           {selectedP1Character && (
             <img
               src={selectedP1Character.picture}
@@ -75,13 +75,13 @@ export function ViewCharacters({
               className="selected-character-image"
             />
           )}
-          <div className="character-row">{renderCharacterButtons(1)}</div>
+          <div>{renderCharacterButtons(1)}</div>
         </div>
         <div className="col text-center">
           <h3>Characters</h3>
         </div>
         <div className="col text-center">
-          <h3>{p2username}</h3>
+          <h3>{p2username.username}</h3>
           {selectedP2Character && (
             <img
               src={selectedP2Character.picture}
@@ -89,7 +89,7 @@ export function ViewCharacters({
               className="selected-character-image"
             />
           )}
-          <div className="character-row">{renderCharacterButtons(2)}</div>
+          <div>{renderCharacterButtons(2)}</div>
         </div>
       </div>
       <div className="text-center mt-3">

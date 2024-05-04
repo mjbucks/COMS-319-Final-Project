@@ -81,8 +81,10 @@ app.get("/player/:id", async (req, res) => {
     const results = await db
       .collection("players")
       .insertOne(newDocument);
-    
-    res.status(200).send(results);
+
+    console.log(newDocument);
+      
+    res.status(200).send(newDocument);
   } catch (error) {
     console.error("An error occurred:", error);
     res.status(500).send({ error: 'An internal server error occurred' });

@@ -8,9 +8,9 @@ export default function Homepage({
     return (
         <div className="container">
             <div className="user-greetings">
-                <div className="left-greeting">Hello {p1User}</div>
+                <div className="left-greeting">Hello {p1User.username} ({p1User.win}-{p1User.loss})</div>
                 <button className="play-button" onClick={() => setScreen('chooseCharacter')}>Play</button>
-                <div className="right-greeting">Hello {p2User}</div>
+                <div className="right-greeting">Hello {p2User.username} ({p2User.win}-{p2User.loss})</div>
             </div>
             <div className="card">
                 <div className="card-header">

@@ -95,7 +95,7 @@ export function ViewGame({p1Character, p2Character, setScreen, p1username, p2use
     }
     return (
         <div className="container">
-            <p>{p1Character.name} {p2Character.name} {p1username} {p2username}</p>
+            <p>{p1Character.name} {p2Character.name} {p1username.username} {p2username.username}</p>
         </div>
     );
 }
