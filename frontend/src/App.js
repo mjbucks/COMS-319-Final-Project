@@ -8,10 +8,12 @@ import Homepage from "./components/Homepage";
 import WikiCard from "./components/WikiCard";
 
 function App() {
+
   const [p1username, setP1User] = useState({});
   const [p2username, setP2User] = useState({});
   const [p1move, setP1Move] = useState({});
   const [p2move, setP2Move] = useState({});
+
   const [p1Character, setP1Character] = useState({});
   const [p2Character, setP2Character] = useState({});
   
@@ -63,9 +65,6 @@ function App() {
           setScreen = {setScreen}
           p1username = {p1username}
           p2username = {p2username}
-          p1move = {p1move}
-          p2move = {p2move}
-  
           /></div>;
       // Add more cases for additional screens
       default:
