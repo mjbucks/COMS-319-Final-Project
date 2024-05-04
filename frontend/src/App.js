@@ -8,8 +8,12 @@ import Homepage from "./components/Homepage";
 import WikiCard from "./components/WikiCard";
 
 function App() {
-  const [p1username, setP1Username] = useState('');
-  const [p2username, setP2Username] = useState('');
+
+  const [p1username, setP1User] = useState({});
+  const [p2username, setP2User] = useState({});
+  const [p1move, setP1Move] = useState({});
+  const [p2move, setP2Move] = useState({});
+
   const [p1Character, setP1Character] = useState({});
   const [p2Character, setP2Character] = useState({});
   
@@ -23,13 +27,13 @@ function App() {
           <>
             <div className="card-container">
               <LoginForm
-                setPlayerUsername={setP1Username}
+                setPlayer={setP1User}
                 player="P1"
               />
             </div>
             <div className="card-container">
               <LoginForm
-                setPlayerUsername={setP2Username}
+                setPlayer={setP2User}
                 player="P2"
               />
             </div>
@@ -69,9 +73,10 @@ function App() {
   };
 
   // Check if both players have logged in to change screen to home
-  if (p1username && p2username && screen === 'login') {
+  if (Object.keys(p1username).length !== 0 && Object.keys(p2username).length !== 0 && screen === 'login') {
     setScreen('home');
   }
+  
 
   return (
     <div className="App">

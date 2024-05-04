@@ -67,7 +67,7 @@ export function ViewCharacters({
         <div className="container-center">
             <div className="row">
                 <div className="col text-center">
-                    <h3>{p1username}</h3>
+                    <h3>{p1username.username}</h3>
                     {selectedP1Character && (
                         <img
                             src={selectedP1Character.picture}
@@ -81,7 +81,7 @@ export function ViewCharacters({
                     <h3>Characters</h3>
                 </div>
                 <div className="col text-center">
-                    <h3>{p2username}</h3>
+                    <h3>{p2username.username}</h3>
                     {selectedP2Character && (
                         <img
                             src={selectedP2Character.picture}

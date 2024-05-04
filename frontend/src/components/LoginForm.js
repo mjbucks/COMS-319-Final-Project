@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import PropTypes from "prop-types"
 
 export function LoginForm({
-  setPlayerUsername, player
+  setPlayer, player
 }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -45,8 +45,9 @@ export function LoginForm({
             throw new Error('Failed to submit form data');
           }
         }
-        
-        setPlayerUsername(username);
+
+        const playerData = await response.json();
+        setPlayer(playerData);
         setLoggedIn(true);
 
       } catch (error) {
@@ -82,7 +83,8 @@ export function LoginForm({
           }
         }
 
-        setPlayerUsername(username);
+        const playerData = await response.json();
+        setPlayer(playerData);
         setLoggedIn(true);
 
       } catch (error) {
@@ -123,7 +125,7 @@ export function LoginForm({
 };
 
 LoginForm.propTypes = {
-  setPlayerUsername: PropTypes.func,
+  setPlayer: PropTypes.func,
   player: PropTypes.string
 };
 
