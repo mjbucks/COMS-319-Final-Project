@@ -8,7 +8,6 @@ import Homepage from "./components/Homepage";
 import WikiCard from "./components/WikiCard";
 
 function App() {
-
   const [p1username, setP1User] = useState({});
   const [p2username, setP2User] = useState({});
   const [p1move, setP1Move] = useState({});

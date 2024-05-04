@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function WikiCard({ character }) {
+function WikiCard({ character, onClose }) {
 
   function generateBars(value) {
     const bars = [];
@@ -48,9 +48,22 @@ function WikiCard({ character }) {
         backgroundColor: 'white'
       }}
     >
+      <button
+        style={{
+          backgroundColor: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          fontSize: '18px',
+          color: '#888',
+          marginLeft: '98%'
+        }}
+        onClick={onClose}
+      >
+        X
+      </button>
       <h3>{character.name}</h3>
       <div style={{ display: 'flex' }}>
-      <img src={character.picture} style={{ marginRight: '20px' }} alt={character.name} />
+        <img src={character.picture} style={{ marginRight: '20px' }} alt={character.name} />
         <div>
           <h5>Description:</h5>
           <p>{character.description}</p>
@@ -84,6 +97,7 @@ function WikiCard({ character }) {
       <p>Health Points:.. {generateBars(character.stats.hp)} {character.stats.hp}</p>
     </div>
   );
+  
 }
 
 WikiCard.propTypes = {
@@ -122,7 +136,8 @@ WikiCard.propTypes = {
       hp: PropTypes.number
     }),
     image: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  onClose: PropTypes.func.isRequired
 };
 
 export default WikiCard;
