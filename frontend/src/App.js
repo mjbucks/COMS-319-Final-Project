@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import './styles/style.css';
 import Homepage from "./components/Homepage";
 import WikiCard from "./components/WikiCard";
+import Authors from "./components/Authors";
 
 function App() {
   const [p1username, setP1User] = useState({});
@@ -65,6 +66,10 @@ function App() {
           p1username = {p1username}
           p2username = {p2username}
           /></div>;
+        case 'authors':
+          return <div><Authors
+          setScreen = {setScreen}
+          /></div>
       // Add more cases for additional screens
       default:
         return null;
