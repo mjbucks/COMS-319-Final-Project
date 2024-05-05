@@ -20,6 +20,43 @@ export function LoginForm({
     setPassword(event.target.value);
   };
 
+
+const handleDelete = async (event) => {
+  event.preventDefault();
+  setError(''); // Clear any previous error messages
+    try {
+      const data = {
+        username: username,
+        password: password
+      }
+      const response = await fetch('http://localhost:8081/removePlayer', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        const responseData = await response.json();
+        if (response.status === 409) {
+          throw new Error(responseData.error); // Throw error message from server
+        } else {
+          throw new Error('Failed to submit form data');
+        }
+      }
+      else{
+        //send good message
+        setErrorColor("green");
+        setError('Deleted Account');
+      }
+    } catch (error) {
+      console.error('Error submitting form data:', error.message);
+      setErrorColor("red");
+      setError('Failed to delete to account');
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(''); // Clear any previous error messages
@@ -115,9 +152,20 @@ export function LoginForm({
           </form>
           {error && <p style={{ color: errorColor }}>{error}</p>}
           <p>
-            {isSignup ? 'Already have an account?' : 'Don\'t have an account?'}
-            <button onClick={() => setIsSignup(!isSignup)}>{isSignup ? 'Log In' : 'Sign Up'}</button>
+            {isSignup ? 'Already have an account?' : 'Don\'t have an account/Need to delete an account?'}
+            <button onClick={() => setIsSignup(!isSignup)}>{isSignup ? 'Log In' : 'Sign Up/Delete'}</button>
+
           </p>
+          {isSignup && <p>Need to delete an existing account?</p>}
+          {isSignup && (
+            
+          <button 
+            onClick={handleDelete} 
+            className="toggle-moves-button-delete"
+          >
+            Delete Account</button>
+          
+        )}
         </>
       )}
     </div>
