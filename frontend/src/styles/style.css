@@ -152,17 +152,6 @@
   margin-bottom: 20px;
 }
 
-.toggle-moves-button {
-  background-color: #081f5c;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
 .toggle-moves-button:hover {
   background-color: #05143e; /* Darker shade of blue */
 }
@@ -174,14 +163,24 @@
 }
 
 .moves-container button {
-  background-color: #081f5c;
-  color: white;
-  border: 1px solid #ccc;
+  background-color: #05143e;
+  color: #f0f0f0;
+  border: 1px solid #05143e;
   border-radius: 8px;
   padding: 10px 20px;
   margin: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.toggle-wik-container button {
+  background-color: #f0f0f0;
+  color: #05143e;
+  border: 1px solid #05143e;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
 }
 
 .moves-container button:hover {
@@ -203,4 +202,29 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
+}
+
+.log {
+  display: flex;
+  justify-content: space-between;
+}
+
+.log-column {
+  width: 33%; /* Adjust this value as needed */
+  float: left;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  font-family: 'Gil Sans', monospace; /* Apply Gil Sans monospace font */
+}
+
+
+.log-column:not(:first-child) {
+  border-left: 1px solid #ccc;
+}
+
+.log-column h3 {
+  font-weight: bold;
 }
