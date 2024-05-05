@@ -11,9 +11,12 @@ export function Authors({setScreen}) {
 
     return (
         <div>
-            <div style={{ marginTop: "20px", textAlign: "center" }}>
+            <div style={{ marginTop: "20px", textAlign: "center", marginLeft: '20px', marginRight: '20px' }}>
                 <h2>COM S 319: Construction of User Interfaces</h2>
                 <p>The date is 05/4/2024. This is our final project for COMS 319, a course taught by Dr. Abraham Aldaco at Iowa State University. In this project, Tate and Max have made a turn based game in which players select moves and play against each other on the same local machine.</p>
+                <p>Professor contacts:</p>
+                <p>Abraham Aldaco, Ph.D. Email: aaldaco@iastate.edu</p>
+                <p> Ali Jannesari, Ph.D. Email: jannesar@iastate.edu</p>
             </div>
             <div style={{ marginTop: "20px", display: "flex", justifyContent: "space-around" }}>
                 <div style={cardStyle}>
