@@ -1,5 +1,6 @@
 import "../styles/homepage.css";
 import homelogo from "../HomepageImages/homelogo.jpg";
+import gameplay from "../HomepageImages/gameplay.jpg";
 import PropTypes from 'prop-types';
 
 export default function Homepage({
@@ -43,7 +44,9 @@ export default function Homepage({
                         </p>
                     </div>
                     <div className="image-container">
-                        <img src="./Image/gameplay.png" alt="How to Play Image" />
+                        <img src={gameplay} alt="How to Play Image" style={{
+                            width: '100%'
+                        }} />
                     </div>
                 </div>
             </div>
