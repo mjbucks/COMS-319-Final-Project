@@ -91,6 +91,30 @@ app.get("/player/:id", async (req, res) => {
   }
 });
 
+app.delete("/removePlayer", async (req, res) => {
+  try {
+    await client.connect();
+    
+    const existingPlayer = await db.collection("players").findOne({ username: req.body.username });
+    if (!existingPlayer) {
+      res.status(409).send({ error: 'Username does not exist' });
+      return;
+    }
+    else{
+      if(req.body.password !== existingPlayer.password){
+        res.status(400).send({ error: 'Incorrect Password' });
+      }
+    }
+
+    const results = await db
+      .collection("players")
+      .deleteOne(existingPlayer);
+    res.status(200).send(existingPlayer);
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).send({ error: 'An internal server error occurred' });
+  }
+});
 
 app.delete("/deletePlayer/:id", async (req, res) => {
   try {

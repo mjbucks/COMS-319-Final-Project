@@ -167,6 +167,21 @@
   background-color: #05143e; /* Darker shade of blue */
 }
 
+.toggle-moves-button-delete {
+  background-color: #e64949 !important;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-moves-button-delete:hover {
+  background-color: #770000 !important;
+}
+
 .moves-container {
   display: flex;
   justify-content: center;
