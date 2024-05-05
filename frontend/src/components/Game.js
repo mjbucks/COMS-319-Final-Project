@@ -11,11 +11,11 @@ function Log({ gameStats, p1stats, p2stats, p1username, p2username, p1prevMove, 
         <div className="log-column">
           <h3>{p1username.username}'s Stats:</h3>
           <p>HP: {Math.floor(p1stats.hp)}</p>
-          <p>Attack: {Math.floor(p1stats.attack)}</p>
-          <p>Special Attack: {Math.floor(p1stats.special_attack)}</p>
-          <p>Speed: {Math.floor(p1stats.speed)}</p>
-          <p>Defense: {Math.floor(p1stats.defense)}</p>
-          <p>Special Defense: {Math.floor(p1stats.special_defense)}</p>
+          <p>Attack: {Number(p1stats.attack.toFixed(2))}</p>
+          <p>Special Attack: {Number(p1stats.special_attack.toFixed(2))}</p>
+          <p>Speed: {Number(p1stats.speed.toFixed(2))}</p>
+          <p>Defense: {Number(p1stats.defense.toFixed(2))}</p>
+          <p>Special Defense: {Number(p1stats.special_defense.toFixed(2))}</p>
           {/* Add other stats for Player 1 */}
         </div>
         <div className="log-column">
@@ -28,12 +28,12 @@ function Log({ gameStats, p1stats, p2stats, p1username, p2username, p1prevMove, 
         </div>
         <div className="log-column">
           <h3>{p2username.username}'s Stats:</h3>
-          <p>HP: {Math.floor(p2stats.hp)}</p>
-          <p>Attack: {Math.floor(p2stats.attack)}</p>
-          <p>Special Attack: {Math.floor(p2stats.special_attack)}</p>
-          <p>Speed: {Math.floor(p2stats.speed)}</p>
-          <p>Defense: {Math.floor(p2stats.defense)}</p>
-          <p>Special Defense: {Math.floor(p2stats.special_defense)}</p>
+          <p>HP: {Number(p2stats.hp.toFixed(2))}</p>
+          <p>Attack: {Number(p2stats.attack.toFixed(2))}</p>
+          <p>Special Attack: {Number(p2stats.special_attack.toFixed(2))}</p>
+          <p>Speed: {Number(p2stats.speed.toFixed(2))}</p>
+          <p>Defense: {Number(p2stats.defense.toFixed(2))}</p>
+          <p>Special Defense: {Number(p2stats.special_defense.toFixed(2))}</p>
           {/* Add other stats for Player 2 */}
         </div>
       </div>
@@ -220,10 +220,10 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
             gameStats.snow = p2move.effect?.snow
         }
         if (gameStats.inverse !== true && p1move.effect.inverse) {
-            gameStats.inverse = p2move.effect?.inverse
+            gameStats.inverse = !gameStats.inverse;
         }
-        if (gameStats.inverse !== true && p1move.effect.snow) {
-            gameStats.inverse = p2move.effect?.inverse
+        if (gameStats.inverse !== true && p2move.effect.inverse) {
+            gameStats.inverse = !gameStats.inverse;
         }
 
 
@@ -336,7 +336,7 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
                 {/* Player 1 */}
                 <div className="player">
                   <h3>{p1username.username}</h3>
-                  <div>
+                  <div className="container-center">
                     <img src={p1Character.picture} alt={p1Character.name} className="character-image" />
                   </div>
                   <div className="toggle-wik-container">
@@ -372,7 +372,7 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
                 {/* Player 2 */}
                 <div className="player">
                   <h3>{p2username.username}</h3>
-                  <div>
+                  <div className="container-center">
                     <img src={p2Character.picture} alt={p2Character.name} className="character-image" />
                   </div>
                   <div className="toggle-wik-container">

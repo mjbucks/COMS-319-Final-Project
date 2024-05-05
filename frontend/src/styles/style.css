@@ -145,8 +145,8 @@
 }
 
 .character-image {
-  width: 70%;
-  height: 70%;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   border: 3px solid #081f5c;
   margin-bottom: 20px;
