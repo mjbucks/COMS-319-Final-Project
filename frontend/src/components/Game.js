@@ -66,6 +66,8 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
     const [selectedCharacter, setSelectedCharacter] = useState(null);
     const [p1prevMove, setP1PrevMove] = useState({name: 'None'});
     const [p2prevMove, setP2PrevMove] = useState({name: 'None'});
+    const [p1finalhp, setP1FinalHP] = useState(0);
+    const [p2finalhp, setP2FinalHP] = useState(0);
     //get 2 for each player
 
     useEffect(() => {
@@ -234,11 +236,15 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
             p2username.win += 1;
             p1username.loss += 1;
             setWinner(p2username.username);
+            setP1FinalHP(p1stats.hp);
+            setP2FinalHP(p2stats.hp);
         }
         else if (p2stats.hp < 0) {
             p1username.win += 1;
             p2username.loss += 1;
             setWinner(p1username.username);
+            setP1FinalHP(p1stats.hp);
+            setP2FinalHP(p2stats.hp);
         }
     }
 
@@ -401,8 +407,15 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
               </button>
             </>
           ) : (
-            <div>
-              <p>{winner}</p>
+            <div className="winner-info">
+              <p><b>{winner}</b> has defeated <i>{winner === p1username.username ? p2username.username : p1username.username}</i> in an intense battle!</p>
+              <p><b>{winner}</b>'s character of choice: <b>{winner === p1username.username ? p1Character.name : p2Character.name}</b></p>
+              <p><b>{winner}</b> had {winner === p1username.username ? p1finalhp : p2finalhp} hp to <i>{winner === p1username.username ? p2username.username : p1username.username}</i>'s {winner === p2username.username ? p1finalhp : p2finalhp} hp </p>
+              {winner === p1username.username ? (
+                <img src={p1Character.picture} alt={p1Character.name} className="character-image" />
+              ) : (
+                <img src={p2Character.picture} alt={p2Character.name} className="character-image" />
+              )}
               <button onClick={handleBackToHome}>Return Home</button>
             </div>
           )}
