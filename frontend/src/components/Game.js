@@ -5,6 +5,42 @@ import WikiCard from "./WikiCard";
 
 import PropTypes from "prop-types";
 
+function Log({ gameStats, p1stats, p2stats, p1username, p2username, p1prevMove, p2prevMove }) {
+    return (
+      <div className="log">
+        <div className="log-column">
+          <h3>{p1username.username}'s Stats:</h3>
+          <p>HP: {Math.floor(p1stats.hp)}</p>
+          <p>Attack: {Number(p1stats.attack.toFixed(2))}</p>
+          <p>Special Attack: {Number(p1stats.special_attack.toFixed(2))}</p>
+          <p>Speed: {Number(p1stats.speed.toFixed(2))}</p>
+          <p>Defense: {Number(p1stats.defense.toFixed(2))}</p>
+          <p>Special Defense: {Number(p1stats.special_defense.toFixed(2))}</p>
+          {/* Add other stats for Player 1 */}
+        </div>
+        <div className="log-column">
+          <h3>Game Stats:</h3>
+          <p>Weather: {gameStats.snow ? 'Snowy' : 'Clear'}</p>
+          <p>Inversed: {gameStats.inverse ? 'Active' : 'Inactive'}</p>
+          <p>{p1username.username}'s Prev Move: {p1prevMove.name}</p>
+          <p>{p2username.username}'s Prev Move: {p2prevMove.name}</p>
+          {/* Add other game stats */}
+        </div>
+        <div className="log-column">
+          <h3>{p2username.username}'s Stats:</h3>
+          <p>HP: {Number(p2stats.hp.toFixed(2))}</p>
+          <p>Attack: {Number(p2stats.attack.toFixed(2))}</p>
+          <p>Special Attack: {Number(p2stats.special_attack.toFixed(2))}</p>
+          <p>Speed: {Number(p2stats.speed.toFixed(2))}</p>
+          <p>Defense: {Number(p2stats.defense.toFixed(2))}</p>
+          <p>Special Defense: {Number(p2stats.special_defense.toFixed(2))}</p>
+          {/* Add other stats for Player 2 */}
+        </div>
+      </div>
+    );
+  }
+  
+
 export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2username }) {
     const statBoostTracker = {
         hp: 0,
@@ -13,7 +49,7 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
         speed: 1,
         defense: 1,
         special_defense: 1,
-        heal: 0,
+        heal: 1,
         priority: 0,
         snow: false,
         inverse: false
@@ -28,11 +64,15 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
     const [winner, setWinner] = useState('');
     const [showWikiCard, setShowWikiCard] = useState(false);
     const [selectedCharacter, setSelectedCharacter] = useState(null);
+    const [p1prevMove, setP1PrevMove] = useState({name: 'None'});
+    const [p2prevMove, setP2PrevMove] = useState({name: 'None'});
+    const [p1finalhp, setP1FinalHP] = useState(0);
+    const [p2finalhp, setP2FinalHP] = useState(0);
     //get 2 for each player
 
     useEffect(() => {
-        setP1Stats(stats => ({ ...stats, hp: p1Character.stats.hp * 2.5 }));
-        setP2Stats(stats => ({ ...stats, hp: p2Character.stats.hp * 2.5 }));
+        setP1Stats(stats => ({ ...stats, hp: Math.floor(p1Character.stats.hp * 2.5) }));
+        setP2Stats(stats => ({ ...stats, hp: Math.floor(p2Character.stats.hp * 2.5) }));
     }, [p1Character, p2Character]);
 
 
@@ -145,15 +185,15 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
         }
         //now apply
         if (p1turn) {
-            p2stats.hp -= p1atk;
+            p2stats.hp -= Math.floor(p1atk);
             if (!(p2stats.hp <= 0)) {
-                p1stats.hp -= p2atk;
+                p1stats.hp -= Math.floor(p2atk);
             }
         }
         else {
-            p1stats.hp -= p2atk;
+            p1stats.hp -= Math.floor(p2atk);
             if (!(p1stats.hp <= 0)) {
-                p2stats.hp -= p1atk;
+                p2stats.hp -= Math.floor(p1atk);
             }
         }
     };
@@ -165,6 +205,7 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
             p1stats.special_attack += p1stats.special_attack * ((p1move.effect.spatk ? p1move.effect.spatk : 0) * 0.5);
             p1stats.special_defense += p1stats.special_defense * ((p1move.effect.spdef ? p1move.effect.spdef : 0) * 0.5);
             p1stats.speed += p1stats.speed * (((p1move.effect.spe ? p1move.effect.spe : 0)) * 0.5);
+            p1stats.hp += (p1move.effect.heal ? p1move.effect.heal : 0);
         }
         if (typeof p2move.effect === 'object' && p2move.effect !== null) {
             p2stats.attack += p2stats.attack * ((p2move.effect.atk ? p2move.effect.atk : 0) * 0.5);
@@ -172,6 +213,7 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
             p2stats.special_attack += p2stats.special_attack * ((p2move.effect.spatk ? p2move.effect.spatk : 0) * 0.5);
             p2stats.special_defense += p2stats.special_defense * ((p2move.effect.spdef ? p2move.effect.spdef : 0) * 0.5);
             p2stats.speed += p2stats.speed * ((p2move.effect.spe ? p2move.effect.spe : 0) * 0.5);
+            p2stats.hp += (p2move.effect.heal ? p2move.effect.heal : 0);
         }
         if (gameStats.snow !== true && p1move.effect.snow) {
             gameStats.snow = true
@@ -180,10 +222,10 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
             gameStats.snow = p2move.effect?.snow
         }
         if (gameStats.inverse !== true && p1move.effect.inverse) {
-            gameStats.inverse = p2move.effect?.inverse
+            gameStats.inverse = !gameStats.inverse;
         }
-        if (gameStats.inverse !== true && p1move.effect.snow) {
-            gameStats.inverse = p2move.effect?.inverse
+        if (gameStats.inverse !== true && p2move.effect.inverse) {
+            gameStats.inverse = !gameStats.inverse;
         }
 
 
@@ -194,11 +236,15 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
             p2username.win += 1;
             p1username.loss += 1;
             setWinner(p2username.username);
+            setP1FinalHP(p1stats.hp);
+            setP2FinalHP(p2stats.hp);
         }
         else if (p2stats.hp < 0) {
             p1username.win += 1;
             p2username.loss += 1;
             setWinner(p1username.username);
+            setP1FinalHP(p1stats.hp);
+            setP2FinalHP(p2stats.hp);
         }
     }
 
@@ -264,10 +310,12 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
         setP2MovesVisible(false);
     };
     function handleNewTurn() {
-        handleGameCalcs()
-        handleMoveEffects()
-        setP1Move({})
-        setP2Move({})
+        handleGameCalcs();
+        handleMoveEffects();
+        setP1PrevMove(p1move);
+        setP2PrevMove(p2move);
+        setP1Move({});
+        setP2Move({});
         isGameOver();
     };
 
@@ -294,55 +342,87 @@ export function ViewGame({ p1Character, p2Character, setScreen, p1username, p2us
                 {/* Player 1 */}
                 <div className="player">
                   <h3>{p1username.username}</h3>
-                  <img src={p1Character.picture} alt={p1Character.name} className="character-image" />
+                  <div className="container-center">
+                    <img src={p1Character.picture} alt={p1Character.name} className="character-image" />
+                  </div>
+                  <div className="toggle-wik-container">
+                    <div className="button-row">
+                      <button onClick={() => setP1MovesVisible(!p1MovesVisible)} disabled={p1MovesVisible}>
+                        Toggle {p1Character.name}'s Moves
+                      </button>
+                      <button onClick={() => openWikiCard(p1Character)}>Wiki</button>
+                    </div>
+                  </div>
                   <div className="moves-container">
-                    <button className="toggle-moves-button" onClick={() => setP1MovesVisible(!p1MovesVisible)} disabled={p1MovesVisible}>
-                      Toggle {p1Character.name}'s Moves
-                    </button>
-                    {/* Wiki button for Player 1 */}
-                    <button onClick={() => openWikiCard(p1Character)}>Wiki</button>
                     {p1MovesVisible && (
-                      <div className="moves-row">
-                        <button onClick={() => handleSetP1Move(p1Character.moves.move1)}>{p1Character.moves.move1.name}</button>
-                        <button onClick={() => handleSetP1Move(p1Character.moves.move2)}>{p1Character.moves.move2.name}</button>
-                        <button onClick={() => handleSetP1Move(p1Character.moves.move3)}>{p1Character.moves.move3.name}</button>
-                      </div>
-                    )}
+                        <div className="moves-row">
+                            <div>
+                            <button onClick={() => handleSetP1Move(p1Character.moves.move1)}>{p1Character.moves.move1.name}</button>
+                            <button onClick={() => handleSetP1Move(p1Character.moves.move2)}>{p1Character.moves.move2.name}</button>
+                            <button onClick={() => handleSetP1Move(p1Character.moves.move3)}>{p1Character.moves.move3.name}</button>
+                            </div>
+                        </div>
+                        )}
                   </div>
                 </div>
+                {/* Log */}
+                <Log
+                  gameStats={gameStats}
+                  p1stats={p1stats}
+                  p2stats={p2stats}
+                  p1username={p1username}
+                  p2username={p2username}
+                  p1prevMove={p1prevMove}
+                  p2prevMove={p2prevMove}
+                />
                 {/* Player 2 */}
                 <div className="player">
                   <h3>{p2username.username}</h3>
-                  <img src={p2Character.picture} alt={p2Character.name} className="character-image" />
+                  <div className="container-center">
+                    <img src={p2Character.picture} alt={p2Character.name} className="character-image" />
+                  </div>
+                  <div className="toggle-wik-container">
+                    <div className="button-row">
+                      <button onClick={() => setP2MovesVisible(!p2MovesVisible)} disabled={p2MovesVisible}>
+                        Toggle {p2Character.name}'s Moves
+                      </button>
+                      <button onClick={() => openWikiCard(p2Character)}>Wiki</button>
+                    </div>
+                  </div>
                   <div className="moves-container">
-                    <button className="toggle-moves-button" onClick={() => setP2MovesVisible(!p2MovesVisible)} disabled={p2MovesVisible}>
-                      Toggle {p2Character.name}'s Moves
-                    </button>
-                    {/* Wiki button for Player 2 */}
-                    <button onClick={() => openWikiCard(p2Character)}>Wiki</button>
                     {p2MovesVisible && (
-                      <div className="moves-row">
-                        <button onClick={() => handleSetP2Move(p2Character.moves.move1)}>{p2Character.moves.move1.name}</button>
-                        <button onClick={() => handleSetP2Move(p2Character.moves.move2)}>{p2Character.moves.move2.name}</button>
-                        <button onClick={() => handleSetP2Move(p2Character.moves.move3)}>{p2Character.moves.move3.name}</button>
-                      </div>
-                    )}
+                        <div className="moves-row">
+                            <div>
+                            <button onClick={() => handleSetP2Move(p2Character.moves.move1)}>{p2Character.moves.move1.name}</button>
+                            <button onClick={() => handleSetP2Move(p2Character.moves.move2)}>{p2Character.moves.move2.name}</button>
+                            <button onClick={() => handleSetP2Move(p2Character.moves.move3)}>{p2Character.moves.move3.name}</button>
+                            </div>
+                        </div>
+                        )}
                   </div>
                 </div>
               </div>
-              <p>{p1move.name} {p2move.name}</p>
               <button onClick={handleNewTurn} disabled={!p1move.name || !p2move.name}>
                 Begin Turn
               </button>
             </>
           ) : (
-            <div>
-              <p>{winner}</p>
+            <div className="winner-info">
+              <p><b>{winner}</b> has defeated <i>{winner === p1username.username ? p2username.username : p1username.username}</i> in an intense battle!</p>
+              <p><b>{winner}</b>'s character of choice: <b>{winner === p1username.username ? p1Character.name : p2Character.name}</b></p>
+              <p><b>{winner}</b> had {winner === p1username.username ? p1finalhp : p2finalhp} hp to <i>{winner === p1username.username ? p2username.username : p1username.username}</i>'s {winner === p2username.username ? p1finalhp : p2finalhp} hp </p>
+              {winner === p1username.username ? (
+                <img src={p1Character.picture} alt={p1Character.name} className="character-image" />
+              ) : (
+                <img src={p2Character.picture} alt={p2Character.name} className="character-image" />
+              )}
               <button onClick={handleBackToHome}>Return Home</button>
             </div>
           )}
         </div>
-      );      
+      );
+      
+          
          
 
 }
